@@ -1,0 +1,19 @@
+name: Daily motivation email
+
+on:
+  schedule:
+    # 08:00 Asia/Kolkata
+    - cron: "30 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send today's message
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl --fail-with-body --request POST "$APP_URL/api/send-motivation" \
+            --header "Authorization: Bearer $CRON_SECRET"
