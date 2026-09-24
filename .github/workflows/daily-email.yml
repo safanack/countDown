@@ -1,4 +1,4 @@
-name: Daily motivation email
+name: Daily Telegram message
 
 on:
   schedule:

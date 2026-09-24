@@ -17,6 +17,13 @@ export async function POST(request: Request) {
     return Response.json({ error: "Telegram is not configured." }, { status: 400 });
   }
 
+  const websiteUrl = process.env.WEBSITE_URL?.trim();
+  if (!websiteUrl) {
+    return Response.json({ error: "WEBSITE_URL is not configured." }, { status: 400 });
+  }
+
+  const recipientName = process.env.TELEGRAM_RECIPIENT_NAME?.trim() || "there";
+
   const data = await loadCountdownData();
   const view = buildCountdownView(new Date(), {
     start: data.start,
@@ -24,7 +31,7 @@ export async function POST(request: Request) {
     timeZone: data.timeZone,
   });
   const message = messageForDate(view.today, data.messages, data.target);
-  const text = `${view.todayLabel}\n\n${message}\n\n${view.daysRemaining} days remaining until ${view.targetLabel}.`;
+  const text = `Hi ${recipientName},\n\nToday's countdown is ready:\n${websiteUrl}\n\n${view.todayLabel}\n${message}\n\n${view.daysRemaining} days remaining until ${view.targetLabel}.`;
   const messageId = await sendTelegramMessage({ text });
 
   return Response.json({ messageId });
