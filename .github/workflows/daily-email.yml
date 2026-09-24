@@ -2,8 +2,8 @@ name: Daily motivation email
 
 on:
   schedule:
-    # 08:00 Asia/Kolkata
-    - cron: "30 2 * * *"
+    # 11:59 Asia/Kolkata
+    - cron: "29 6 * * *"
   workflow_dispatch:
 
 jobs:
